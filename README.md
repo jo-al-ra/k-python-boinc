@@ -51,7 +51,7 @@ docker push <dockerhub-user>/k-python-template:1.0.0
 ### Run docker image directly from dockerhub
 
 ```bash
-rm -rf output && \
+rm -rf output
 docker run \
         --rm \
         -e IEXEC_IN=/iexec_in \
