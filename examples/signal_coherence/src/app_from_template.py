@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
-import ruptures as rpt
 import numpy as np
-import pandas as pd
 import sys
 import os
 import json
@@ -11,19 +9,32 @@ def your_python_code(arg, input_path, output_path):
     """
     Paste there your code you want to execute in iExec worker
     """
-    # Open input file
-    signal = pd.read_csv(input_path)
+    # time
+    dt = 0.01
+    t = np.arange(0, 30, dt) # 3k time points
 
-    # Run computation
-    algo = rpt.Pelt(model="rbf").fit(signal)
-    result = algo.predict(pen=10)
-    rpt.display(signal, [], result)
+    # Read signal
+    signal = np.genfromtxt(input_path, delimiter=",")
 
-    # Save results in output directory
-    out_filename = "/results_change_point_detect.pdf"
-    plt.savefig('{}/results_change_point_detect.pdf'.format(output_path))
+    s1=signal[0]
+    s2=signal[1]
 
-    # Return output path + filename
+    fig, axs = plt.subplots(2, 1)
+    axs[0].plot(t, s1, t, s2)
+    axs[0].set_xlim(0, 2)
+    axs[0].set_xlabel('time')
+    axs[0].set_ylabel('s1 and s2')
+    axs[0].grid(True)
+
+    cxy, f = axs[1].cohere(s1, s2, 256, 1. / dt)
+    axs[1].set_ylabel('coherence')
+
+    fig.tight_layout()
+
+    # save the output
+    out_filename = "/results_vibration.pdf"
+    plt.savefig('{}/results_vibration.pdf'.format(output_path))
+
     return output_path + out_filename
 
 # ============================================

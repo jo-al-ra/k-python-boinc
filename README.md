@@ -1,6 +1,8 @@
 # k-python-template
 Template for running your python code in KnowledgeX
 
+
+[Medium Article](https://blog.knowledgex.eu/how-to-run-your-python-code-in-knowledgex-749e2651370c)
 ## Non TEE workflow
 
 Paste your code into the `def your_python_code()` in the `template_app.py`. 
