@@ -1,4 +1,7 @@
-FROM ubuntu:latest
+FROM boinc/client:base-ubuntu
+
+LABEL maintainer="JadenData" \
+      description="Boinc client executing a minimal task in IExec container"
 
 ENV DEBIAN_FRONTEND=noninteractive
 

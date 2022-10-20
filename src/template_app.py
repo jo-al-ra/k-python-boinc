@@ -1,10 +1,7 @@
-import matplotlib.pyplot as plt
-import ruptures as rpt
-import numpy as np
-import pandas as pd
 import sys
 import os
 import json
+import subprocess
 
 
 def your_python_code(arg, input_path, output_path):
@@ -12,21 +9,24 @@ def your_python_code(arg, input_path, output_path):
     Paste there your code you want to execute in iExec worker
     """
     # Open input file
-    signal = pd.read_csv(input_path)
 
     # Run computation
-    algo = rpt.Pelt(model="rbf").fit(signal)
-    result = algo.predict(pen=10)
-    rpt.display(signal, [], result)
 
-    # Save results in output directory
-    out_filename = "/results_change_point_detect.pdf"
-    plt.savefig('{}/results_change_point_detect.pdf'.format(output_path))
+    project_URL = "https://universeathome.pl/universe/"
+    account_key = "e8157b446331fd944c93e648dc99e5a9"
+    out_file = "/log_file"
+    boincCommand = "/usr/bin/boinc --exit_when_idle --fetch_minimal_work --attach_project " + \
+        project_URL + " " + account_key + " >> "+output_path+out_file+" 2>&1"
+    subprocess.run(boincCommand,
+                   shell=True, check=True,
+                   executable='/bin/bash')
 
     # Return output path + filename
-    return output_path + out_filename
+    return output_path + out_file
 
 # ============================================
+
+
 def read_input_parameter(n):
     """
     This function reads and returns input parameters from input string. Script
@@ -55,11 +55,12 @@ def handle_input_files():
     file_list = []
     for i in range(1, iexec_input_files_number + 1):
         file_path = iexec_in + "/" \
-                    + os.environ['IEXEC_INPUT_FILE_NAME_' + str(i)]
+            + os.environ['IEXEC_INPUT_FILE_NAME_' + str(i)]
         if os.path.isfile(file_path):
             with open(file_path) as f:
                 file_list.append(f)
     return file_list
+
 
 def save_result(result_filepath):
     """
@@ -87,17 +88,11 @@ if __name__ == '__main__':
     print('IEXEC_OUT: ' + iexec_out)
     iexec_input_files_number = int(os.environ['IEXEC_INPUT_FILES_NUMBER'])
     print('IEXEC_INPUT_FILES_NUMBER: ' + str(iexec_input_files_number))
-    iexec_input_file_name = os.environ['IEXEC_INPUT_FILE_NAME_1']
-    print('IEXEC_INPUT_FILE_NAME_1: ' + iexec_input_file_name)
 
     # Read args
     args = read_input_parameter(1)
     print('args: ' + args)
-    filepath = iexec_in + "/" + iexec_input_file_name
-    print('filepath: ' + filepath)
 
     # Trigger computation
-    result_path = your_python_code(args, filepath, iexec_out)
+    result_path = your_python_code(args, "", iexec_out)
     save_result(result_path)
-
-

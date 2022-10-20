@@ -1,5 +1,5 @@
-# k-python-template
-Template for running your python code in KnowledgeX
+# k-python-boinc
+Container for running your boinc in KnowledgeX
 
 
 [Medium Article](https://blog.knowledgex.eu/how-to-run-your-python-code-in-knowledgex-749e2651370c)
@@ -21,10 +21,10 @@ Paste your code into the `def your_python_code()` in the `template_app.py`.
 ### Build Docker image
 
 ```bash
-docker build . --tag k-python-template
+docker build . --tag k-python-boinc
 ```
 
-### Run from locally build dcoker image
+### Run from locally build docker image
 
 ```bash
 rm -rf output && \
@@ -32,12 +32,11 @@ docker run \
         --rm \
         -e IEXEC_IN=/iexec_in \
         -e IEXEC_OUT=/iexec_out \
-        -e IEXEC_INPUT_FILES_NUMBER=1 \
+        -e IEXEC_INPUT_FILES_NUMBER=0 \
         -e IEXEC_INPUT_FILES_FOLDER=/iexec_in \
-        -e IEXEC_INPUT_FILE_NAME_1=data_set_full.csv \
         -v $(pwd)/output:/iexec_out \
         -v $(pwd)/sample_data:/iexec_in \
-        k-python-template
+        k-python-boinc
 ```
 
 Once the execution ends, the result should be found in the folder output.
@@ -47,8 +46,8 @@ Once the execution ends, the result should be found in the folder output.
 ### Deploy to DockerHub
 
 ```bash
-docker tag k-python-template <dockerhub-user>/k-python-template:1.0.0
-docker push <dockerhub-user>/k-python-template:1.0.0
+docker tag k-python-boinc <dockerhub-user>/k-python-boinc:1.0.0
+docker push <dockerhub-user>/k-python-boinc:1.0.0
 ```
 ### Run docker image directly from dockerhub
 
@@ -63,5 +62,5 @@ docker run \
         -e IEXEC_INPUT_FILE_NAME_1=data_set_full.csv \
         -v $(pwd)/output:/iexec_out \
         -v $(pwd)/sample_data:/iexec_in \
-        docker.io/jadenx/k-python-template:1.0.0
+        docker.io/jadenx/k-python-boinc:1.0.0
 ```
