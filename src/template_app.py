@@ -13,10 +13,10 @@ def your_python_code(arg, input_path, output_path):
     # Run computation
 
     project_URL = "https://universeathome.pl/universe/"
-    account_key = "e8157b446331fd944c93e648dc99e5a9"
+    account_key = "240569_7bfa2c1ecef0d1f0a0db343ab7167c23"
     out_file = "/log_file"
     boincCommand = "/usr/bin/boinc --exit_when_idle --fetch_minimal_work --attach_project " + \
-        project_URL + " " + account_key + " >> "+output_path+out_file+" 2>&1"
+        project_URL + " " + account_key + " 2>&1 | tee -a "+output_path+out_file
     subprocess.run(boincCommand,
                    shell=True, check=True,
                    executable='/bin/bash')
